@@ -1,0 +1,81 @@
+// Right now we're using Bootstrap SCSS, but only importing a subset
+// of the styles in order to keep the bundle size down. If we want to
+// import everything we can, we can uncomment the following line:
+//@import "~bootstrap/scss/bootstrap.scss";
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "~bootstrap/scss/functions";
+
+// 2. Include any default variable overrides here
+
+// 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/variables-dark";
+
+// 4. Include any default map overrides here
+
+// 5. Include remainder of required parts
+@import "~bootstrap/scss/maps";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/root";
+
+// 6. Include any other optional stylesheet partials as desired; list below is not inclusive of all available stylesheets
+@import "~bootstrap/scss/utilities";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/images";
+@import "~bootstrap/scss/containers";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/card";
+@import "~bootstrap/scss/modal";
+@import "~bootstrap/scss/close";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/nav";
+@import "~bootstrap/scss/dropdown";
+@import "~bootstrap/scss/navbar";
+@import "~bootstrap/scss/placeholders";
+@import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/spinners";
+@import "~bootstrap/scss/helpers";
+@import "~bootstrap/scss/transitions";
+
+// 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import "~bootstrap/scss/utilities/api";
+
+body {
+    // Ensure that the content is not covered by the navbar
+    padding-top: 64px;
+
+    // Prevent the scrollbar from popping in and out when
+    // navigating between screens
+    overflow-y: scroll;
+}
+
+// Make the main content container a bit narrower on larger screens
+@include media-breakpoint-up(lg) {
+    .container {
+        max-width: 770px;
+    }
+}
+
+// Improve the styling of the active tab in the sidebar
+.nav-pills .nav-link.active {
+    font-weight: bold;
+    color: var(--bs-link-color);
+    background-color: transparent;
+}
+
+// Include the Bootstrap Icons default styling
+.bi {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: -.125em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.navbar-toggler {
+    // The React Bootstrap Modal adds a 15px margin-right padding to this
+    // element, when a modal is open, which we don't want.
+    margin-right: 0 !important;
+}

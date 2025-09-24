@@ -53,7 +53,7 @@ function TextInput({ input, onCompletion, autoFocus }: WidgetChoiceProps) {
 
     useEffect(() => {
         if (autoFocus) {
-            inputRef.current?.focus();
+            inputRef.current?.focus({ preventScroll: true });
         }
     }, [autoFocus]);
 

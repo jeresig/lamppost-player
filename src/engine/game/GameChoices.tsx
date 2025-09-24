@@ -7,7 +7,7 @@ import type { Widget } from "../shared/types";
 import { gameChoiceWidgets } from "../shared/widgets";
 
 const handleAutoFocus = (element: HTMLButtonElement | null) => {
-    element?.focus();
+    element?.focus({ preventScroll: true });
 };
 
 const Choice = ({

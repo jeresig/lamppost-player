@@ -13,16 +13,15 @@ import settings from "./story/settings";
 import "./engine/app/styles.scss";
 import "./story/styles.scss";
 
-// Enable dark mode
+// Enable the theme
+let defaultTheme = settings.defaultTheme || "light";
 if (settings.enableDarkMode) {
-    const defaultTheme =
-        window.localStorage.getItem(`${settings.gameName}-theme`) ||
+    defaultTheme = window.localStorage.getItem(`${settings.gameName}-theme`) ||
         (window.matchMedia?.("(prefers-color-scheme: dark)").matches
             ? "dark"
             : "light");
-
-    document.documentElement.setAttribute("data-bs-theme", defaultTheme);
 }
+document.documentElement.setAttribute("data-bs-theme", defaultTheme);
 
 // Register widgets
 registerWidget(imageWidget);

@@ -45,6 +45,7 @@ function Header(props: ScreenProps) {
         setExpanded(false);
         if (!gameIsWorthSaving) {
             startNewGame();
+            setPage("game");
         } else {
             setShowNewGameModal(true);
         }
@@ -59,6 +60,20 @@ function Header(props: ScreenProps) {
         document.documentElement.setAttribute("data-bs-theme", theme);
         window.localStorage.setItem(`${gameName}-theme`, theme);
     }, [theme]);
+
+    const handleSaveModalClose = useCallback(() => {
+        setShowSaveModal(false);
+    }, [setShowSaveModal]);
+
+    const handleLoadModalClose = useCallback(() => {
+        setShowLoadModal(false);
+        setPage("game");
+    }, [setPage, setShowLoadModal]);
+
+    const handleNewGameModalClose = useCallback(() => {
+        setShowNewGameModal(false);
+        setPage("game");
+    }, [setPage, setShowNewGameModal]);
 
     return (
         <>
@@ -150,15 +165,15 @@ function Header(props: ScreenProps) {
             </Navbar>
             <SaveModal
                 show={showSaveModal}
-                handleClose={() => setShowSaveModal(false)}
+                handleClose={handleSaveModalClose}
             />
             <LoadModal
                 show={showLoadModal}
-                handleClose={() => setShowLoadModal(false)}
+                handleClose={handleLoadModalClose}
             />
             <NewGameModal
                 show={showNewGameModal}
-                handleClose={() => setShowNewGameModal(false)}
+                handleClose={handleNewGameModalClose}
             />
         </>
     );

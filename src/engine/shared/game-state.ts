@@ -24,7 +24,7 @@ export const useStoryStore = create<{
         index: number;
         output?: Record<string, string>;
         variables?: Record<string, string>;
-    }) => void;
+    }) => { gameState: GameState[]; story: Story } | null;
 }>((set, get) => ({
     story: null,
     storyJSON: null,
@@ -95,7 +95,7 @@ export const useStoryStore = create<{
     }) => {
         const { story, currentState, gameState } = get();
         if (!story || !currentState) {
-            return;
+            return null;
         }
 
         currentState.selectedChoice = index;
@@ -116,12 +116,18 @@ export const useStoryStore = create<{
         story.ChooseChoiceIndex(index);
         const newState = getStoryState({ story, currentState });
         if (newState) {
+            const newGameState = [...(gameState || []), newState];
             set({
-                gameState: [...(gameState || []), newState],
+                gameState: newGameState,
                 currentState: newState,
                 previousState: currentState,
             });
+            return {
+                gameState: newGameState,
+                story,
+            };
         }
+        return null;
     },
 }));
 

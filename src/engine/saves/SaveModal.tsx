@@ -9,31 +9,6 @@ import settings from "../../story/settings";
 import { useStoryStore } from "../shared/game-state";
 import { useSavedGamesStore } from "../shared/saved-games";
 
-/**
- * Check to see if the current page is in a cross-origin iframe.
- */
-const isInCrossOriginIframe = () => {
-    try {
-        return window.self.location.origin !== window.top?.location.origin;
-    } catch (_e) {
-        // If there's an error, assume we're in a cross-origin iframe as
-        // we don't have access to the top window.
-        return true;
-    }
-};
-
-/**
- * Safari and Firefox do not allow storing to localStorage when
- * inside a cross-origin iframe.
- */
-const disallowsCrossOriginSaves = () => {
-    return (
-        (navigator.userAgent.includes("Safari") &&
-            !navigator.userAgent.includes("Chrome")) ||
-        navigator.userAgent.includes("Firefox")
-    );
-};
-
 export function SaveModal({
     show,
     handleClose,
@@ -47,8 +22,7 @@ export function SaveModal({
     const story = useStoryStore((state) => state.story);
     const gameState = useStoryStore((state) => state.gameState);
     const addSavedGame = useSavedGamesStore((state) => state.addSavedGame);
-    const localSaveOnly =
-        isInCrossOriginIframe() && disallowsCrossOriginSaves();
+    const localSaveOnly = useSavedGamesStore((state) => !state.canSaveInLocalStorage());
     const currentState = useStoryStore((state) => state.currentState);
     const { shortGameName, gameName } = settings;
 
@@ -77,7 +51,7 @@ export function SaveModal({
                 JSON.stringify({
                     id: crypto.randomUUID(),
                     title: saveNameRef.current?.value ?? "",
-                    steps: gameState.length,
+                    steps: Math.max(gameState.length - 1, 1),
                     date: new Date().toLocaleString(),
                     gameState: gameState,
                     storyData: story.state.toJson(),

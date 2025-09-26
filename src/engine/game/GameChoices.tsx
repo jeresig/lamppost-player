@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import Placeholder from "react-bootstrap/Placeholder";
 
 import { useStoryStore } from "../shared/game-state";
+import { useSavedGamesStore } from "../shared/saved-games";
 import type { Widget } from "../shared/types";
 import { gameChoiceWidgets } from "../shared/widgets";
 
@@ -62,6 +63,9 @@ const Choice = ({
 export default function GameChoices() {
     const currentState = useStoryStore((state) => state.currentState);
     const selectChoice = useStoryStore((state) => state.selectChoice);
+    const deleteSavedGame = useSavedGamesStore((state) => state.deleteSavedGame);
+    const addSavedGame = useSavedGamesStore((state) => state.addSavedGame);
+    const localSaveOnly = useSavedGamesStore((state) => !state.canSaveInLocalStorage());
 
     const onCompletion = useCallback(
         (index: number) => {
@@ -71,7 +75,23 @@ export default function GameChoices() {
             }: {
                 output?: Record<string, string>;
                 variables?: Record<string, string>;
-            }) => selectChoice({ index, output, variables });
+            }) => {
+                const results = selectChoice({ index, output, variables });
+
+                if (results && !localSaveOnly) {
+                    const { gameState, story } = results;
+
+                    deleteSavedGame("autosave");
+                    addSavedGame({
+                        id: "autosave",
+                        title: "Autosave",
+                        steps: Math.max(gameState.length - 1, 1),
+                        date: new Date().toLocaleString(),
+                        gameState,
+                        storyData: story.state.toJson(),
+                    });
+                }
+            };
         },
         [selectChoice],
     );

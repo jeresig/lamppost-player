@@ -43,9 +43,9 @@ const Choice = ({
                 variant="light"
                 className="text-start"
                 onClick={() => onCompletion({})}
-            >
-                {choice}
-            </Button>
+                // biome-ignore lint/security/noDangerouslySetInnerHtml: We want to render the HTML
+                dangerouslySetInnerHTML={{ __html: choice }}
+            />
         );
     }
 

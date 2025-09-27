@@ -1,7 +1,8 @@
-import { useCallback } from "preact/hooks";
+import { useCallback, useState } from "preact/hooks";
 import Button from "react-bootstrap/Button";
 import Placeholder from "react-bootstrap/Placeholder";
 
+import { LoadModal } from "../saves/LoadModal";
 import { useStoryStore } from "../shared/game-state";
 import { useSavedGamesStore } from "../shared/saved-games";
 import type { Widget } from "../shared/types";
@@ -66,6 +67,8 @@ export default function GameChoices() {
     const deleteSavedGame = useSavedGamesStore((state) => state.deleteSavedGame);
     const addSavedGame = useSavedGamesStore((state) => state.addSavedGame);
     const localSaveOnly = useSavedGamesStore((state) => !state.canSaveInLocalStorage());
+    const startNewGame = useStoryStore((state) => state.startNewGame);
+    const [showLoadModal, setShowLoadModal] = useState(false);
 
     const onCompletion = useCallback(
         (index: number) => {
@@ -95,6 +98,14 @@ export default function GameChoices() {
         },
         [selectChoice],
     );
+
+    const handleLoadSavedGame = useCallback(() => {
+        setShowLoadModal(true);
+    }, [setShowLoadModal]);
+
+    const handleLoadModalClose = useCallback(() => {
+        setShowLoadModal(false);
+    }, [setShowLoadModal]);
 
     if (!currentState) {
         return (
@@ -129,6 +140,22 @@ export default function GameChoices() {
                 </p>
             </>
         );
+    }
+
+    // If there are no choices then we're at the end of the story
+    if (currentState.choices.length === 0) {
+        return <div className="text-center">
+            <Button variant="primary" className="m-3" onClick={startNewGame}>
+                Restart
+            </Button>
+            <Button variant="primary" className="m-3" onClick={handleLoadSavedGame}>
+                Load Game
+            </Button>
+            <LoadModal
+                show={showLoadModal}
+                handleClose={handleLoadModalClose}
+            />
+        </div>;
     }
 
     const choices = currentState.choices.map((choice, index) => (

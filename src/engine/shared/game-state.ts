@@ -9,6 +9,7 @@ export const useStoryStore = create<{
     story: Story | null;
     storyJSON: { inkVersion: number } | null;
     Story: typeof Story | null;
+    error: string | null;
     _initializing: boolean;
     gameState: GameState[];
     currentState: GameState | null;
@@ -24,11 +25,12 @@ export const useStoryStore = create<{
         index: number;
         output?: Record<string, string>;
         variables?: Record<string, string>;
-    }) => { gameState: GameState[]; story: Story } | null;
+    }) => { gameState: GameState[]; story: Story; error: string | null } | null;
 }>((set, get) => ({
     story: null,
     storyJSON: null,
     Story: null,
+    error: null,
     _initializing: false,
     gameState: [],
     currentState: null,
@@ -59,6 +61,9 @@ export const useStoryStore = create<{
             return;
         }
         const story = new Story(storyJSON);
+        story.onError = (error) => {
+            set({ error });
+        };
         const newState = getStoryState({ story, currentState: null });
         if (newState) {
             set({
@@ -66,6 +71,7 @@ export const useStoryStore = create<{
                 gameState: [newState],
                 currentState: newState,
                 previousState: null,
+                error: null,
             });
         }
     },
@@ -76,12 +82,16 @@ export const useStoryStore = create<{
         }
         const { gameState, storyData } = savedGame;
         const story = new Story(storyJSON);
+        story.onError = (error) => {
+            set({ error });
+        };
         story.state.LoadJson(storyData);
         set({
             story,
             gameState,
             currentState: gameState[gameState.length - 1],
             previousState: null,
+            error: null,
         });
     },
     selectChoice: ({
@@ -125,6 +135,7 @@ export const useStoryStore = create<{
             return {
                 gameState: newGameState,
                 story,
+                error: get().error,
             };
         }
         return null;

@@ -1,7 +1,9 @@
 import { useCallback, useState } from "preact/hooks";
+import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Placeholder from "react-bootstrap/Placeholder";
 
+import { downloadHTMLLog } from "../history/download-log";
 import { LoadModal } from "../saves/LoadModal";
 import { useStoryStore } from "../shared/game-state";
 import { useSavedGamesStore } from "../shared/saved-games";
@@ -62,6 +64,7 @@ const Choice = ({
 };
 
 export default function GameChoices() {
+    const gameState = useStoryStore((state) => state.gameState);
     const currentState = useStoryStore((state) => state.currentState);
     const selectChoice = useStoryStore((state) => state.selectChoice);
     const deleteSavedGame = useSavedGamesStore((state) => state.deleteSavedGame);
@@ -69,6 +72,7 @@ export default function GameChoices() {
     const localSaveOnly = useSavedGamesStore((state) => !state.canSaveInLocalStorage());
     const startNewGame = useStoryStore((state) => state.startNewGame);
     const [showLoadModal, setShowLoadModal] = useState(false);
+    const error = useStoryStore((state) => state.error);
 
     const onCompletion = useCallback(
         (index: number) => {
@@ -82,7 +86,11 @@ export default function GameChoices() {
                 const results = selectChoice({ index, output, variables });
 
                 if (results && !localSaveOnly) {
-                    const { gameState, story } = results;
+                    const { gameState, story, error } = results;
+
+                    if (error) {
+                        return;
+                    }
 
                     deleteSavedGame("autosave");
                     addSavedGame({
@@ -106,6 +114,10 @@ export default function GameChoices() {
     const handleLoadModalClose = useCallback(() => {
         setShowLoadModal(false);
     }, [setShowLoadModal]);
+
+    const handleDownloadHTMLLog = useCallback(() => {
+        downloadHTMLLog(gameState);
+    }, [gameState]);
 
     if (!currentState) {
         return (
@@ -143,19 +155,32 @@ export default function GameChoices() {
     }
 
     // If there are no choices then we're at the end of the story
-    if (currentState.choices.length === 0) {
-        return <div className="text-center">
-            <Button variant="primary" className="m-3" onClick={startNewGame}>
-                Restart
-            </Button>
-            <Button variant="primary" className="m-3" onClick={handleLoadSavedGame}>
-                Load Game
-            </Button>
-            <LoadModal
-                show={showLoadModal}
-                handleClose={handleLoadModalClose}
-            />
-        </div>;
+    if (error || currentState.choices.length === 0) {
+        const errorMessage = error ? <Alert variant="danger">
+            There was an error loading the game. Please download your HTML game log and share it with the developer.
+        </Alert> : null;
+
+        return <>
+            {errorMessage}
+            <hr />
+            <div className="text-center">
+                <Button variant="primary" className="m-3" onClick={handleDownloadHTMLLog}>
+                    Download HTML Log
+                </Button>
+                {!error && (
+                    <Button variant="primary" className="m-3" onClick={startNewGame}>
+                        Restart
+                    </Button>
+                )}
+                <Button variant="primary" className="m-3" onClick={handleLoadSavedGame}>
+                    Load Game
+                </Button>
+                <LoadModal
+                    show={showLoadModal}
+                    handleClose={handleLoadModalClose}
+                />
+            </div>
+        </>;
     }
 
     const choices = currentState.choices.map((choice, index) => (

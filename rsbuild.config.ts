@@ -8,6 +8,9 @@ export default defineConfig({
     output: {
         assetPrefix: "./",
     },
+    dev: {
+        hmr: false,
+    },
     plugins: [
         pluginPreact(),
         pluginSass(),

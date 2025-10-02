@@ -29,6 +29,7 @@ function Header(props: ScreenProps) {
     const { shortGameName, gameName } = settings;
     const { page, setPage } = props;
     const gameIsWorthSaving = gameState && gameState.length > 1;
+    const homeScreen = screens[0].id
 
     const handlePageChange = useCallback(
         (page: string) => {
@@ -85,7 +86,7 @@ function Header(props: ScreenProps) {
                 fixed="top"
             >
                 <Container>
-                    <Navbar.Brand href="/">{shortGameName || gameName}</Navbar.Brand>
+                    <Navbar.Brand href={`?page=${homeScreen}`} onClick={handlePageChange(homeScreen)}>{shortGameName || gameName}</Navbar.Brand>
                     <Navbar.Toggle
                         aria-controls="navbar"
                         onClick={() => setExpanded(!expanded)}

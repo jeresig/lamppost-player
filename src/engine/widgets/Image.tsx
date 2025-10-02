@@ -57,6 +57,7 @@ function ImageHistory({ input }: WidgetHistoryProps) {
                 show={showImageModal}
                 onHide={() => setShowImageModal(false)}
                 onClick={() => setShowImageModal(false)}
+                size="lg"
             >
                 <Button
                     variant="close"

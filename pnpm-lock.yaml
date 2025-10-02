@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@restart/ui':
+    hash: a5e8fc90b178768eb944dda5eebb5517aac083132f334bb49f55dc218e12ccbd
+    path: patches/@restart__ui.patch
+
 importers:
 
   .:
@@ -1605,7 +1610,7 @@ snapshots:
       dequal: 2.0.3
       react: 19.1.1
 
-  '@restart/ui@1.9.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+  '@restart/ui@1.9.4(patch_hash=a5e8fc90b178768eb944dda5eebb5517aac083132f334bb49f55dc218e12ccbd)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@popperjs/core': 2.11.8
@@ -2141,7 +2146,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.28.4
       '@restart/hooks': 0.4.16(react@19.1.1)
-      '@restart/ui': 1.9.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@restart/ui': 1.9.4(patch_hash=a5e8fc90b178768eb944dda5eebb5517aac083132f334bb49f55dc218e12ccbd)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@types/prop-types': 15.7.15
       '@types/react-transition-group': 4.4.12(@types/react@19.1.12)
       classnames: 2.5.1

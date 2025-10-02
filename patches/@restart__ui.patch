@@ -1,0 +1,26 @@
+diff --git a/esm/useClickOutside.js b/esm/useClickOutside.js
+index 7c8eeb387f4c5a10cfc7114078f81085951f520f..4526af4795862d5afdf6b945e0ba4887117fa656 100644
+--- a/esm/useClickOutside.js
++++ b/esm/useClickOutside.js
+@@ -66,7 +66,7 @@ function useClickOutside(ref, onClickOutside = noop, {
+     // For things rendered in an iframe, the event might originate on the parent window
+     // so we should fall back to that global event if the local one doesn't exist
+     // https://github.com/facebook/react/issues/20074
+-    let currentEvent = (_ownerWindow$event = ownerWindow.event) != null ? _ownerWindow$event : (_ownerWindow$parent = ownerWindow.parent) == null ? void 0 : _ownerWindow$parent.event;
++    let currentEvent = null; try { currentEvent = (_ownerWindow$event = ownerWindow.event) != null ? _ownerWindow$event : (_ownerWindow$parent = ownerWindow.parent) == null ? void 0 : _ownerWindow$parent.event; } catch {}
+     let removeInitialTriggerListener = null;
+     if (InitialTriggerEvents[clickTrigger]) {
+       removeInitialTriggerListener = listen(doc, InitialTriggerEvents[clickTrigger], handleInitialMouse, true);
+diff --git a/esm/useRootClose.js b/esm/useRootClose.js
+index b9e3cfabe1947262004ddf2a210f824458792f03..331843568da66142a77b9aab3b3af91f9809036a 100644
+--- a/esm/useRootClose.js
++++ b/esm/useRootClose.js
+@@ -37,7 +37,7 @@ function useRootClose(ref, onRootClose, {
+ 
+     // Store the current event to avoid triggering handlers immediately
+     // https://github.com/facebook/react/issues/20074
+-    let currentEvent = (doc.defaultView || window).event;
++    let currentEvent = null; try { currentEvent = (doc.defaultView || window).event; } catch {}
+     const removeKeyupListener = listen(doc, 'keyup', e => {
+       // skip if this event is the same as the one running when we added the handlers
+       if (e === currentEvent) {

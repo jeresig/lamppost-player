@@ -52,7 +52,7 @@ export const useSavedGamesStore = create<{
                     ),
                 }),
             canSaveInLocalStorage: () =>
-                !isInCrossOriginIframe() && !disallowsCrossOriginSaves(),
+                !isInCrossOriginIframe() || !disallowsCrossOriginSaves(),
         }),
         { name: `${settings.gameName}-savedGames` },
     ),

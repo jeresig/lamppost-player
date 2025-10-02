@@ -1,11 +1,16 @@
 import type { GameState, Widget } from "../shared/types";
+import { gameTextWidgets } from "../shared/widgets";
 
-const Line = ({ line }: { line: string | Widget }) => {
-    if (typeof line === "string") {
+const Line = ({ text }: { text: string | Widget }) => {
+    if (typeof text === "string") {
         // biome-ignore lint/security/noDangerouslySetInnerHtml: ...
-        return <p dangerouslySetInnerHTML={{ __html: line }} />;
+        return <p dangerouslySetInnerHTML={{ __html: text }} />;
     }
-    return null; //<WidgetComponent {...line} />;
+    const Widget = gameTextWidgets.get(text.type);
+    if (Widget) {
+        return <Widget input={text.input} />;
+    }
+    return null;
 };
 
 export default function HistoryText({
@@ -17,7 +22,7 @@ export default function HistoryText({
         <>
             {currentState.lines.map((line, i) => (
                 // biome-ignore lint/suspicious/noArrayIndexKey: ...
-                <Line key={i} line={line} />
+                <Line key={i} text={line} />
             ))}
         </>
     );

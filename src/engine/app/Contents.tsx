@@ -32,13 +32,12 @@ const Contents = (props: ScreenProps) => {
                 <title>{pageTitle}</title>
             </Helmet>
             <Tab.Container defaultActiveKey="game">
-                <Row>
+                <Row className="pb-3">
                     <Col
-                        className="d-none d-lg-block"
+                        className="d-none d-lg-block position-fixed"
                         sm={3}
                         style={{
                             width: 163,
-                            position: "fixed",
                             marginLeft: -143,
                         }}
                     >

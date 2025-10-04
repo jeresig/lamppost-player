@@ -83,3 +83,16 @@ body {
     // element, when a modal is open, which we don't want.
     margin-right: 0 !important;
 }
+
+.transitioned {
+    transition: all 0.3s;
+}
+
+.transitioned.preEnter,
+.transitioned.exiting {
+    opacity: 0;
+}
+
+.transitioned.exited {
+    display: none;
+}

@@ -4,6 +4,7 @@ import type {
     WidgetGameTextProps,
     WidgetHeaderProps,
     WidgetHistoryProps,
+    WidgetKeyProps,
     WidgetKnotProps,
     WidgetRegistry,
 } from "./types";
@@ -33,6 +34,10 @@ export const knotWidgets = new Map<
     (props: WidgetKnotProps) => React.ReactNode
 >();
 export const preloadWidgets = new Map<string, () => Promise<any>>();
+export const keyWidgets = new Map<
+    string,
+    (props: WidgetKeyProps) => string | null
+>();
 
 export const registerWidget = (widget: WidgetRegistry) => {
     if (widget.log) {
@@ -55,6 +60,9 @@ export const registerWidget = (widget: WidgetRegistry) => {
     }
     if (widget.preload) {
         preloadWidgets.set(widget.type, widget.preload);
+    }
+    if (widget.key) {
+        keyWidgets.set(widget.type, widget.key);
     }
 };
 

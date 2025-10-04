@@ -1,13 +1,15 @@
+import { memo } from "preact/compat";
 import { useCallback, useState } from "preact/hooks";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Placeholder from "react-bootstrap/Placeholder";
+import type { TransitionStatus } from "react-transition-state";
 
 import { downloadHTMLLog } from "../history/download-log";
 import { LoadModal } from "../saves/LoadModal";
 import { useStoryStore } from "../shared/game-state";
 import { useSavedGamesStore } from "../shared/saved-games";
-import type { Widget } from "../shared/types";
+import type { GameState, Widget } from "../shared/types";
 import { gameChoiceWidgets } from "../shared/widgets";
 
 const handleAutoFocus = (element: HTMLButtonElement | null) => {
@@ -18,6 +20,7 @@ const Choice = ({
     choice,
     onCompletion,
     autoFocus,
+    disabled,
 }: {
     choice: string | Widget;
     onCompletion: ({
@@ -28,6 +31,7 @@ const Choice = ({
         variables?: Record<string, string>;
     }) => void;
     autoFocus: boolean;
+    disabled: boolean;
 }) => {
     const currentState = useStoryStore((state) => state.currentState);
     const story = useStoryStore((state) => state.story);
@@ -45,6 +49,7 @@ const Choice = ({
                 onClick={() => onCompletion({})}
                 // biome-ignore lint/security/noDangerouslySetInnerHtml: We want to render the HTML
                 dangerouslySetInnerHTML={{ __html: choice }}
+                disabled={disabled}
             />
         );
     }
@@ -56,6 +61,7 @@ const Choice = ({
                 input={choice.input}
                 onCompletion={onCompletion}
                 autoFocus={autoFocus}
+                disabled={disabled}
             />
         );
     }
@@ -63,9 +69,8 @@ const Choice = ({
     return null;
 };
 
-export default function GameChoices() {
+function GameChoices({ disabled, currentState, transitionStatus, isMounted }: { disabled: boolean, currentState: GameState | null, transitionStatus: TransitionStatus | undefined, isMounted: boolean }) {
     const gameState = useStoryStore((state) => state.gameState);
-    const currentState = useStoryStore((state) => state.currentState);
     const selectChoice = useStoryStore((state) => state.selectChoice);
     const deleteSavedGame = useSavedGamesStore((state) => state.deleteSavedGame);
     const addSavedGame = useSavedGamesStore((state) => state.addSavedGame);
@@ -118,6 +123,10 @@ export default function GameChoices() {
     const handleDownloadHTMLLog = useCallback(() => {
         downloadHTMLLog(gameState);
     }, [gameState]);
+
+    if (!isMounted || !transitionStatus) {
+        return null;
+    }
 
     if (!currentState) {
         return (
@@ -189,8 +198,11 @@ export default function GameChoices() {
             autoFocus={index === 0}
             choice={choice}
             onCompletion={onCompletion(index)}
+            disabled={disabled}
         />
     ));
 
-    return <div className="d-grid gap-3">{choices}</div>;
+    return <div className={`d-grid gap-3 transitioned ${transitionStatus}`}>{choices}</div>;
 }
+
+export default memo(GameChoices);

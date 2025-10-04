@@ -1,4 +1,5 @@
 import type React from "preact/compat";
+import type { TransitionStatus } from "react-transition-state";
 
 export type SavedGame = {
     id: string;
@@ -57,6 +58,7 @@ export type WidgetChoiceProps = {
         variables?: Record<string, string>;
     }) => void;
     autoFocus: boolean;
+    disabled: boolean;
 };
 
 export type WidgetGameTextProps = {
@@ -70,9 +72,15 @@ export type WidgetHistoryProps = {
 
 export type WidgetHeaderProps = {
     currentState: GameState;
+    transitionStatus: TransitionStatus | undefined;
 };
 
 export type WidgetKnotProps = {
+    currentState: GameState;
+    transitionStatus: TransitionStatus | undefined;
+};
+
+export type WidgetKeyProps = {
     currentState: GameState;
 };
 
@@ -85,4 +93,5 @@ export type WidgetRegistry = {
     header?: (props: WidgetHeaderProps) => React.ReactNode;
     knot?: (props: WidgetKnotProps) => React.ReactNode;
     preload?: () => Promise<any>;
+    key?: (props: WidgetKeyProps) => string | null;
 };

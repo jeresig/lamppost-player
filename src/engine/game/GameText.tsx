@@ -1,8 +1,10 @@
+import { memo } from "preact/compat";
 import Placeholder from "react-bootstrap/Placeholder";
+import type { TransitionStatus } from "react-transition-state";
 
 import { useStoryStore } from "../shared/game-state";
-import type { Widget } from "../shared/types";
-import { gameTextWidgets, knotWidgets } from "../shared/widgets";
+import type { GameState, Widget } from "../shared/types";
+import { gameTextWidgets } from "../shared/widgets";
 
 const Line = ({ text }: { text: string | Widget }) => {
     const story = useStoryStore((state) => state.story);
@@ -20,8 +22,10 @@ const Line = ({ text }: { text: string | Widget }) => {
     return null;
 };
 
-export default function GameText() {
-    const currentState = useStoryStore((state) => state.currentState);
+function GameText({ currentState, transitionStatus, isMounted }: { currentState: GameState | null, transitionStatus: TransitionStatus | undefined, isMounted: boolean }) {
+    if (!isMounted || !transitionStatus) {
+        return null;
+    }
 
     if (!currentState) {
         return (
@@ -37,18 +41,15 @@ export default function GameText() {
         );
     }
 
-    const widgets = Array.from(knotWidgets.entries()).map(([type, Widget]) => (
-        <Widget key={type} currentState={currentState} />
-    ));
-
     const text = currentState.lines.map((line, index) => (
         <Line key={`line-${currentState.id}-${index}`} text={line} />
     ));
 
     return (
-        <>
-            {widgets}
+        <div className={`transitioned ${transitionStatus}`}>
             {text}
-        </>
+        </div>
     );
 }
+
+export default memo(GameText);

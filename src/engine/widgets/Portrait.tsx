@@ -3,17 +3,16 @@ import Button from "react-bootstrap/Button";
 import BootstrapImage from "react-bootstrap/Image";
 import Modal from "react-bootstrap/Modal";
 
-import type { GameState, WidgetRegistry } from "../shared/types";
+import type { GameState, WidgetKnotProps, WidgetRegistry } from "../shared/types";
 import { getWidgetSettings } from "../shared/widgets";
 
-function Portrait({ currentState }: { currentState: GameState }) {
+const key = ({ currentState }: { currentState: GameState }) => {
+    return currentState.tags.Portrait || null;
+}
+
+function Portrait({ currentState, transitionStatus }: WidgetKnotProps) {
     const [showPortraitModal, setShowPortraitModal] = useState(false);
     const portraits = getWidgetSettings("portrait");
-
-    if (!currentState) {
-        return null;
-    }
-
     const portrait = currentState.tags.Portrait as keyof typeof portraits;
     const portraitSrc = portraits?.[portrait]?.small;
 
@@ -27,7 +26,7 @@ function Portrait({ currentState }: { currentState: GameState }) {
         <BootstrapImage
             fluid
             thumbnail
-            className="float-end"
+            className={`float-end transitioned ${transitionStatus || ""}`}
             style={{ width: "30%", marginLeft: "16px", marginBottom: "16px" }}
             src={portraitSrc}
             alt={alt}
@@ -87,4 +86,5 @@ export const portraitWidget = {
     type: "portrait",
     knot: Portrait,
     preload,
+    key,
 } satisfies WidgetRegistry;

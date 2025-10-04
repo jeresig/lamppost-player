@@ -28,7 +28,7 @@ function TextInputHistory({ input: { label }, output }: WidgetHistoryProps) {
     );
 }
 
-function TextInput({ input, onCompletion, autoFocus }: WidgetChoiceProps) {
+function TextInput({ input, onCompletion, autoFocus, disabled }: WidgetChoiceProps) {
     const { name, label, submitLabel } = input;
     const inputRef = useRef<HTMLInputElement>(null);
     const [value, setValue] = useState("");
@@ -36,6 +36,9 @@ function TextInput({ input, onCompletion, autoFocus }: WidgetChoiceProps) {
     const handleSubmit = useCallback(
         (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
+            if (disabled) {
+                return;
+            }
             const value = inputRef.current?.value ?? "";
             if (value) {
                 onCompletion({
@@ -44,7 +47,7 @@ function TextInput({ input, onCompletion, autoFocus }: WidgetChoiceProps) {
                 });
             }
         },
-        [onCompletion, name],
+        [onCompletion, name, disabled],
     );
 
     const handleChange = useCallback(() => {
@@ -52,10 +55,10 @@ function TextInput({ input, onCompletion, autoFocus }: WidgetChoiceProps) {
     }, []);
 
     useEffect(() => {
-        if (autoFocus) {
+        if (autoFocus && !disabled) {
             inputRef.current?.focus({ preventScroll: true });
         }
-    }, [autoFocus]);
+    }, [autoFocus, disabled]);
 
     return (
         <Form onSubmit={handleSubmit}>
@@ -73,8 +76,9 @@ function TextInput({ input, onCompletion, autoFocus }: WidgetChoiceProps) {
                         ref={inputRef}
                         onChange={handleChange}
                         autoComplete="off"
+                        disabled={disabled}
                     />
-                    <Button type="submit" disabled={!value}>
+                    <Button type="submit" disabled={!value || disabled}>
                         {submitLabel || "Submit"}
                     </Button>
                 </Stack>

@@ -94,5 +94,5 @@ body {
 }
 
 .transitioned.exited {
-    display: none;
+    display: none !important;
 }

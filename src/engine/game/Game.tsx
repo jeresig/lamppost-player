@@ -8,7 +8,7 @@ import GameText from "./GameText";
 
 export function Game() {
     const currentState = useStoryStore((state) => state.currentState);
-    const previousState = useStoryStore((state) => state.previousState);
+    let previousState = useStoryStore((state) => state.previousState);
     const { toggle, setItem, stateMap } = useTransitionMap<string>({
         unmountOnExit: true,
         timeout: 300,
@@ -20,6 +20,10 @@ export function Game() {
     const currentStateId = currentState?.id;
     const previousTransitionState = previousStateId ? stateMap.get(previousStateId) : undefined;
     const currentTransitionState = currentStateId ? stateMap.get(currentStateId) : undefined;
+
+    if (previousTransitionState?.status === "exited") {
+        previousState = null;
+    }
 
     if (previousStateId && !stateMap.has(previousStateId)) {
         setItem(previousStateId);
@@ -111,10 +115,10 @@ export function Game() {
                 <Card.Body>
                     <div className="clearfix">
                         {knotWidgets}
-                        <GameText key={previousStateId} currentState={previousState} transitionStatus={previousTransitionState?.status} isMounted={!!previousTransitionState?.isMounted} />
+                        {previousState && <GameText key={previousStateId} currentState={previousState} transitionStatus={previousTransitionState?.status} isMounted={!!previousTransitionState?.isMounted} />}
                         <GameText key={currentStateId} currentState={currentState} transitionStatus={currentTransitionState?.status} isMounted={!!currentTransitionState?.isMounted} />
                     </div>
-                    <GameChoices key={previousStateId} currentState={previousState} disabled={previousTransitionState?.status === "exiting"} transitionStatus={previousTransitionState?.status} isMounted={!!previousTransitionState?.isMounted} />
+                    {previousState && <GameChoices key={previousStateId} currentState={previousState} disabled={previousTransitionState?.status === "exiting"} transitionStatus={previousTransitionState?.status} isMounted={!!previousTransitionState?.isMounted} />}
                     <GameChoices key={currentStateId} currentState={currentState} disabled={currentTransitionState?.status === "exiting"} transitionStatus={currentTransitionState?.status} isMounted={!!currentTransitionState?.isMounted} />
                 </Card.Body>
             </Card>

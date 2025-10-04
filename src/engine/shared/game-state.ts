@@ -6,6 +6,7 @@ import type { GameState, SavedGame, Widget } from "./types";
 import { preloadWidgets } from "./widgets";
 
 export const useStoryStore = create<{
+    id: string;
     story: Story | null;
     storyJSON: { inkVersion: number } | null;
     Story: typeof Story | null;
@@ -27,6 +28,7 @@ export const useStoryStore = create<{
         variables?: Record<string, string>;
     }) => { gameState: GameState[]; story: Story; error: string | null } | null;
 }>((set, get) => ({
+    id: "",
     story: null,
     storyJSON: null,
     Story: null,
@@ -53,7 +55,12 @@ export const useStoryStore = create<{
                 preloadWidget?.(),
             ),
         ]);
-        set({ storyJSON, Story, _initializing: false });
+        set({
+            storyJSON,
+            Story,
+            id: crypto.randomUUID(),
+            _initializing: false,
+        });
     },
     startNewGame: () => {
         const { storyJSON, Story } = get();
@@ -67,6 +74,7 @@ export const useStoryStore = create<{
         const newState = getStoryState({ story, currentState: null });
         if (newState) {
             set({
+                id: crypto.randomUUID(),
                 story,
                 gameState: [newState],
                 currentState: newState,
@@ -87,6 +95,7 @@ export const useStoryStore = create<{
         };
         story.state.LoadJson(storyData);
         set({
+            id: crypto.randomUUID(),
             story,
             gameState,
             currentState: gameState[gameState.length - 1],

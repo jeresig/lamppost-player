@@ -7,6 +7,7 @@ import GameChoices from "./GameChoices";
 import GameText from "./GameText";
 
 export function Game() {
+    const gameId = useStoryStore((state) => state.id);
     const currentState = useStoryStore((state) => state.currentState);
     let previousState = useStoryStore((state) => state.previousState);
     const { toggle, setItem, stateMap } = useTransitionMap<string>({
@@ -16,8 +17,8 @@ export function Game() {
         preExit: true,
     });
 
-    const previousStateId = previousState?.id;
-    const currentStateId = currentState?.id;
+    const previousStateId = previousState?.id ? `${gameId}-${previousState?.id}` : undefined;
+    const currentStateId = currentState?.id ? `${gameId}-${currentState?.id}` : undefined;
     const previousTransitionState = previousStateId ? stateMap.get(previousStateId) : undefined;
     const currentTransitionState = currentStateId ? stateMap.get(currentStateId) : undefined;
 

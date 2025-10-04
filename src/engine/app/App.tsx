@@ -1,5 +1,5 @@
 import { useQueryState } from "nuqs";
-import { useEffect } from "preact/hooks";
+import { useEffect } from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 
 import screens from "../../story/screens";

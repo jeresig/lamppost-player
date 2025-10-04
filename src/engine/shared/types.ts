@@ -1,4 +1,4 @@
-import type React from "preact/compat";
+import type React from "react";
 import type { TransitionStatus } from "react-transition-state";
 
 export type SavedGame = {

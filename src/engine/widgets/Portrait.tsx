@@ -1,4 +1,4 @@
-import { useState } from "preact/hooks";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import BootstrapImage from "react-bootstrap/Image";
 import Modal from "react-bootstrap/Modal";

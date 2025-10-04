@@ -1,6 +1,5 @@
 import DownloadIcon from "bootstrap-icons/icons/download.svg?react";
-import { Fragment } from "preact";
-import { useEffect } from "preact/hooks";
+import { Fragment, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Stack from "react-bootstrap/Stack";

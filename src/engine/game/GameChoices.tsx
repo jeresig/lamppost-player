@@ -107,6 +107,8 @@ function GameChoices({ disabled, currentState, transitionStatus, isMounted }: { 
                         storyData: story.state.toJson(),
                     });
                 }
+
+                window.scrollTo({ top: 0, behavior: "smooth" });
             };
         },
         [selectChoice],

@@ -30,6 +30,12 @@ export default {
     // enableDarkMode: false,
 
     /**
+     * The default theme to use. If not provided, the default theme will be
+     * "light".
+     */
+    // defaultTheme: "light",
+
+    /**
      * The favicon of the game. If not provided, no favicon will be used.
      * This should point to a favicon image file. The import would look
      * something like:

@@ -14,12 +14,16 @@ import "./engine/app/styles.scss";
 import "./story/styles.scss";
 
 // Enable the theme
-let defaultTheme = settings.defaultTheme || "light";
-if (settings.enableDarkMode) {
-    defaultTheme = window.localStorage.getItem(`${settings.gameName}-theme`) ||
-        (window.matchMedia?.("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light");
+let defaultTheme = "light";
+const userSetTheme = window.localStorage.getItem(`${settings.gameName}-theme`);
+if (userSetTheme) {
+    defaultTheme = userSetTheme;
+} else if (settings.defaultTheme) {
+    defaultTheme = settings.defaultTheme;
+} else if (settings.enableDarkMode) {
+    defaultTheme = window.matchMedia?.("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
 }
 document.documentElement.setAttribute("data-bs-theme", defaultTheme);
 

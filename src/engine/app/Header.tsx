@@ -19,7 +19,9 @@ function Header(props: ScreenProps) {
     const [showSaveModal, setShowSaveModal] = useState(false);
     const [showLoadModal, setShowLoadModal] = useState(false);
     const [theme, setTheme] = useState(
-        document.documentElement.getAttribute("data-bs-theme") || "light",
+        document.documentElement.getAttribute("data-bs-theme") ||
+            settings.defaultTheme ||
+            "light",
     );
     const [expanded, setExpanded] = useState(false);
     const [showNewGameModal, setShowNewGameModal] = useState(false);
@@ -29,7 +31,7 @@ function Header(props: ScreenProps) {
     const { shortGameName, gameName } = settings;
     const { page, setPage } = props;
     const gameIsWorthSaving = gameState && gameState.length > 1;
-    const homeScreen = screens[0].id
+    const homeScreen = screens[0].id;
 
     const handlePageChange = useCallback(
         (page: string) => {
@@ -86,7 +88,12 @@ function Header(props: ScreenProps) {
                 fixed="top"
             >
                 <Container>
-                    <Navbar.Brand href={`?page=${homeScreen}`} onClick={handlePageChange(homeScreen)}>{shortGameName || gameName}</Navbar.Brand>
+                    <Navbar.Brand
+                        href={`?page=${homeScreen}`}
+                        onClick={handlePageChange(homeScreen)}
+                    >
+                        {shortGameName || gameName}
+                    </Navbar.Brand>
                     <Navbar.Toggle
                         aria-controls="navbar"
                         onClick={() => setExpanded(!expanded)}

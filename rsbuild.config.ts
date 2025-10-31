@@ -11,6 +11,16 @@ export default defineConfig({
     dev: {
         hmr: false,
     },
+    tools: {
+        rspack(_config, { addRules }) {
+            addRules([
+                {
+                    test: /\.ink$/,
+                    use: ["./src/engine/build/ink-loader.js"],
+                },
+            ]);
+        },
+    },
     plugins: [
         pluginPreact(),
         pluginSass(),

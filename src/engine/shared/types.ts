@@ -39,7 +39,7 @@ export type Screen = {
 export type Settings = {
     enableDarkMode?: boolean | "toggle";
     defaultTheme?: string;
-    loadStory: () => Promise<{ inkVersion: number }>;
+    loadStory: () => Promise<any>;
     defaultSaveName?: (currentState: GameState) => string;
     stickyTags?: string[];
     gameName: string;

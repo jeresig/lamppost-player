@@ -1,12 +1,12 @@
 import type { GameState, Widget } from "../shared/types";
-import { gameTextWidgets } from "../shared/widgets";
+import { historyWidgets } from "../shared/widgets";
 
 const Line = ({ text }: { text: string | Widget }) => {
     if (typeof text === "string") {
         // biome-ignore lint/security/noDangerouslySetInnerHtml: ...
         return <p dangerouslySetInnerHTML={{ __html: text }} />;
     }
-    const Widget = gameTextWidgets.get(text.type);
+    const Widget = historyWidgets.get(text.type);
     if (Widget) {
         return <Widget input={text.input} />;
     }

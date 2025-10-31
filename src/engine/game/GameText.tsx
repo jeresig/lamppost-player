@@ -2,15 +2,10 @@ import { memo } from "react";
 import Placeholder from "react-bootstrap/Placeholder";
 import type { TransitionStatus } from "react-transition-state";
 
-import { useStoryStore } from "../shared/game-state";
 import type { GameState, Widget } from "../shared/types";
 import { gameTextWidgets } from "../shared/widgets";
 
-const Line = ({ text }: { text: string | Widget }) => {
-    const story = useStoryStore((state) => state.story);
-    if (!story) {
-        return null;
-    }
+export const GameTextLine = ({ text }: { text: string | Widget }) => {
     if (typeof text === "string") {
         // biome-ignore lint/security/noDangerouslySetInnerHtml: ...
         return <p dangerouslySetInnerHTML={{ __html: text }} />;
@@ -22,7 +17,15 @@ const Line = ({ text }: { text: string | Widget }) => {
     return null;
 };
 
-function GameText({ currentState, transitionStatus, isMounted }: { currentState: GameState | null, transitionStatus: TransitionStatus | undefined, isMounted: boolean }) {
+function GameText({
+    currentState,
+    transitionStatus,
+    isMounted,
+}: {
+    currentState: GameState | null;
+    transitionStatus: TransitionStatus | undefined;
+    isMounted: boolean;
+}) {
     if (!isMounted || !transitionStatus) {
         return null;
     }
@@ -42,14 +45,10 @@ function GameText({ currentState, transitionStatus, isMounted }: { currentState:
     }
 
     const text = currentState.lines.map((line, index) => (
-        <Line key={`line-${currentState.id}-${index}`} text={line} />
+        <GameTextLine key={`line-${currentState.id}-${index}`} text={line} />
     ));
 
-    return (
-        <div className={`transitioned ${transitionStatus}`}>
-            {text}
-        </div>
-    );
+    return <div className={`transitioned ${transitionStatus}`}>{text}</div>;
 }
 
 export default memo(GameText);

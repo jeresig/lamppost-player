@@ -1,4 +1,4 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useMemo, useState } from "preact/hooks";
 import BootstrapImage from "react-bootstrap/Image";
 
 import type {
@@ -29,6 +29,7 @@ function DiceRoll({ input }: WidgetGameTextProps) {
     const [isFinishedAnimating, setIsFinishedAnimating] = useState(
         duration === 0,
     );
+    const key = useMemo(() => Date.now(), []);
 
     useEffect(() => {
         if (duration === 0) {
@@ -48,7 +49,7 @@ function DiceRoll({ input }: WidgetGameTextProps) {
         <p>
             <BootstrapImage
                 fluid
-                src={diceSrc}
+                src={`${diceSrc}?${key}`}
                 alt={getAlt({ die, value, alt })}
                 className={`dice-roll ${isFinishedAnimating ? "finished" : ""}`}
             />

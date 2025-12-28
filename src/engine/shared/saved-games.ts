@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 import settings from "../../story/settings";
 import type { SavedGame } from "./types";
@@ -54,6 +54,25 @@ export const useSavedGamesStore = create<{
             canSaveInLocalStorage: () =>
                 !isInCrossOriginIframe() || !disallowsCrossOriginSaves(),
         }),
-        { name: `${settings.gameName}-savedGames` },
+        {
+            name: `${settings.gameName}-savedGames`,
+            storage: createJSONStorage(() => ({
+                getItem: (name) => localStorage.getItem(name),
+                setItem: (name, value) => {
+                    try {
+                        localStorage.setItem(name, value);
+                    } catch (error) {
+                        console.error(
+                            "Error saving game to localStorage",
+                            error,
+                        );
+                        window.alert(
+                            "Error saving game to your browser's storage. You may need to remove some saved games to free up space and then try again.",
+                        );
+                    }
+                },
+                removeItem: (name) => localStorage.removeItem(name),
+            })),
+        },
     ),
 );

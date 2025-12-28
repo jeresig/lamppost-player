@@ -1,3 +1,4 @@
+import { useEffect, useState } from "preact/hooks";
 import BootstrapImage from "react-bootstrap/Image";
 
 import type {
@@ -6,6 +7,8 @@ import type {
     WidgetRegistry,
 } from "../shared/types";
 import { getWidgetSettings } from "../shared/widgets";
+
+const DEFAULT_DURATION = 1500;
 
 const getAlt = (input: Record<string, string>) => {
     return (
@@ -18,8 +21,24 @@ function DiceRoll({ input }: WidgetGameTextProps) {
     const diceSettings = getWidgetSettings("dice-roll");
     const die = input.die as string;
     const value = input.value as string;
+    const duration = input.duration
+        ? parseFloat(input.duration as string)
+        : DEFAULT_DURATION;
     const alt = input.alt as string;
     const diceSrc = diceSettings?.[die]?.[value] as string;
+    const [isFinishedAnimating, setIsFinishedAnimating] = useState(
+        duration === 0,
+    );
+
+    useEffect(() => {
+        if (duration === 0) {
+            return;
+        }
+        const timer = setTimeout(() => {
+            setIsFinishedAnimating(true);
+        }, duration);
+        return () => clearTimeout(timer);
+    }, [duration]);
 
     if (!diceSrc) {
         return alt ? <p>{alt}</p> : null;
@@ -31,7 +50,7 @@ function DiceRoll({ input }: WidgetGameTextProps) {
                 fluid
                 src={diceSrc}
                 alt={getAlt({ die, value, alt })}
-                className="dice-roll"
+                className={`dice-roll ${isFinishedAnimating ? "finished" : ""}`}
             />
         </p>
     );

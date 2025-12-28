@@ -68,12 +68,26 @@ const Choice = ({
     return null;
 };
 
-function GameChoices({ disabled, currentState, transitionStatus, isMounted }: { disabled: boolean, currentState: GameState | null, transitionStatus: TransitionStatus | undefined, isMounted: boolean }) {
+function GameChoices({
+    disabled,
+    currentState,
+    transitionStatus,
+    isMounted,
+}: {
+    disabled: boolean;
+    currentState: GameState | null;
+    transitionStatus: TransitionStatus | undefined;
+    isMounted: boolean;
+}) {
     const gameState = useStoryStore((state) => state.gameState);
     const selectChoice = useStoryStore((state) => state.selectChoice);
-    const deleteSavedGame = useSavedGamesStore((state) => state.deleteSavedGame);
+    const deleteSavedGame = useSavedGamesStore(
+        (state) => state.deleteSavedGame,
+    );
     const addSavedGame = useSavedGamesStore((state) => state.addSavedGame);
-    const localSaveOnly = useSavedGamesStore((state) => !state.canSaveInLocalStorage());
+    const localSaveOnly = useSavedGamesStore(
+        (state) => !state.canSaveInLocalStorage(),
+    );
     const startNewGame = useStoryStore((state) => state.startNewGame);
     const [showLoadModal, setShowLoadModal] = useState(false);
     const error = useStoryStore((state) => state.error);
@@ -166,31 +180,48 @@ function GameChoices({ disabled, currentState, transitionStatus, isMounted }: { 
 
     // If there are no choices then we're at the end of the story
     if (error || currentState.choices.length === 0) {
-        const errorMessage = error ? <Alert variant="danger">
-            There was an error loading the game. Please download your HTML game log and share it with the developer.
-        </Alert> : null;
+        const errorMessage = error ? (
+            <Alert variant="danger">
+                There was an error loading the game. Please download your HTML
+                game log and share it with the developer.
+            </Alert>
+        ) : null;
 
-        return <>
-            {errorMessage}
-            <hr />
-            <div className="text-center">
-                <Button variant="primary" className="m-3" onClick={handleDownloadHTMLLog}>
-                    Download HTML Log
-                </Button>
-                {!error && (
-                    <Button variant="primary" className="m-3" onClick={startNewGame}>
-                        Restart
+        return (
+            <>
+                {errorMessage}
+                <hr />
+                <div className="text-center">
+                    <Button
+                        variant="primary"
+                        className="m-3"
+                        onClick={handleDownloadHTMLLog}
+                    >
+                        Download HTML Log
                     </Button>
-                )}
-                <Button variant="primary" className="m-3" onClick={handleLoadSavedGame}>
-                    Load Game
-                </Button>
-                <LoadModal
-                    show={showLoadModal}
-                    handleClose={handleLoadModalClose}
-                />
-            </div>
-        </>;
+                    {!error && (
+                        <Button
+                            variant="primary"
+                            className="m-3"
+                            onClick={startNewGame}
+                        >
+                            Restart
+                        </Button>
+                    )}
+                    <Button
+                        variant="primary"
+                        className="m-3"
+                        onClick={handleLoadSavedGame}
+                    >
+                        Load Game
+                    </Button>
+                    <LoadModal
+                        show={showLoadModal}
+                        handleClose={handleLoadModalClose}
+                    />
+                </div>
+            </>
+        );
     }
 
     const choices = currentState.choices.map((choice, index) => (
@@ -203,7 +234,13 @@ function GameChoices({ disabled, currentState, transitionStatus, isMounted }: { 
         />
     ));
 
-    return <div className={`d-grid gap-3 transitioned ${transitionStatus}`}>{choices}</div>;
+    return (
+        <div
+            className={`d-grid gap-3 choices-container transitioned ${transitionStatus}`}
+        >
+            {choices}
+        </div>
+    );
 }
 
 export default memo(GameChoices);

@@ -48,7 +48,11 @@ function GameText({
         <GameTextLine key={`line-${currentState.id}-${index}`} text={line} />
     ));
 
-    return <div className={`transitioned ${transitionStatus}`}>{text}</div>;
+    return (
+        <div className={`text-container transitioned ${transitionStatus}`}>
+            {text}
+        </div>
+    );
 }
 
 export default memo(GameText);

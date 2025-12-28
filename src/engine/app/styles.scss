@@ -96,3 +96,21 @@ body {
 .transitioned.exited {
     display: none !important;
 }
+
+p:has(.dice-roll) ~ * {
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+}
+
+p:has(.dice-roll.finished) ~ * {
+    opacity: 1;
+}
+
+:has(.dice-roll) ~ .choices-container {
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+}
+
+:has(.dice-roll.finished) ~ .choices-container {
+    opacity: 1;
+}

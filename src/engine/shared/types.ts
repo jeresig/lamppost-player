@@ -20,7 +20,10 @@ export type GameState = {
     id: string;
     lines: Array<string | Widget>;
     tags: Record<string, string>;
-    choices: Array<string | Widget>;
+    choices: Array<{
+        choice: string | Widget;
+        tags: string[];
+    }>;
     selectedChoice?: number;
 };
 

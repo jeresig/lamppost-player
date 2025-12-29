@@ -121,8 +121,8 @@ export const useStoryStore = create<{
 
         if (output) {
             const selectedChoice = currentState.choices[index];
-            if (typeof selectedChoice !== "string") {
-                selectedChoice.output = output;
+            if (typeof selectedChoice.choice !== "string") {
+                selectedChoice.choice.output = output;
             }
         }
 
@@ -221,10 +221,15 @@ const getStoryState = ({
         }
     }
 
+    const choices = story.currentChoices.map((choice) => ({
+        choice: parseWidget(choice.text),
+        tags: choice.tags || [],
+    }));
+
     return {
         id: crypto.randomUUID(),
         lines,
         tags,
-        choices: story.currentChoices.map((choice) => parseWidget(choice.text)),
+        choices,
     } satisfies GameState;
 };

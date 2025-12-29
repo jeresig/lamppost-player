@@ -1,3 +1,4 @@
+import SlashCircleIcon from "bootstrap-icons/icons/slash-circle.svg?react";
 import { memo, useCallback, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
@@ -40,16 +41,25 @@ const Choice = ({
     }
 
     if (typeof choice === "string") {
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: We want to render the HTML
+        let contents = <span dangerouslySetInnerHTML={{ __html: choice }} />;
+        if (disabled) {
+            contents = (
+                <span>
+                    <SlashCircleIcon className="bi" /> {contents}
+                </span>
+            );
+        }
         return (
             <Button
                 ref={autoFocus ? handleAutoFocus : undefined}
                 variant="light"
                 className="text-start"
                 onClick={() => onCompletion({})}
-                // biome-ignore lint/security/noDangerouslySetInnerHtml: We want to render the HTML
-                dangerouslySetInnerHTML={{ __html: choice }}
                 disabled={disabled}
-            />
+            >
+                {contents}
+            </Button>
         );
     }
 
@@ -101,6 +111,10 @@ function GameChoices({
                 output?: Record<string, string>;
                 variables?: Record<string, string>;
             }) => {
+                if (disabled) {
+                    return;
+                }
+
                 const results = selectChoice({ index, output, variables });
 
                 if (results && !localSaveOnly) {
@@ -228,9 +242,9 @@ function GameChoices({
         <Choice
             key={`choice-${currentState.id}-${index}`}
             autoFocus={index === 0}
-            choice={choice}
+            choice={choice.choice}
             onCompletion={onCompletion(index)}
-            disabled={disabled}
+            disabled={choice.tags.includes("disabled")}
         />
     ));
 

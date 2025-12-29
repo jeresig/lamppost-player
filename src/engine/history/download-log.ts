@@ -41,7 +41,7 @@ export const downloadHTMLLog = (gameState: GameState[]) => {
                 .map((line) => renderLogLine(line))
                 .join("\n");
             if (state.selectedChoice != null) {
-                text += `\n${renderChoice(state.choices[state.selectedChoice])}`;
+                text += `\n${renderChoice(state.choices[state.selectedChoice].choice)}`;
             }
             return text;
         })

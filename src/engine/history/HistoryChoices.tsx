@@ -1,5 +1,3 @@
-
-
 import type { GameState } from "../shared/types";
 import { historyWidgets } from "../shared/widgets";
 
@@ -12,13 +10,16 @@ export default function HistoryChoices({
         return null;
     }
 
-    const choice = currentState.choices[currentState.selectedChoice];
+    const { choice } = currentState.choices[currentState.selectedChoice];
 
     if (typeof choice === "string") {
         return (
             <p>
-                {/* biome-ignore lint/security/noDangerouslySetInnerHtml: We want to render the HTML */}
-                <strong>&raquo; <span dangerouslySetInnerHTML={{ __html: choice }} /></strong>
+                <strong>
+                    &raquo;{" "}
+                    {/* biome-ignore lint/security/noDangerouslySetInnerHtml: We want to render the HTML */}
+                    <span dangerouslySetInnerHTML={{ __html: choice }} />
+                </strong>
             </p>
         );
     }

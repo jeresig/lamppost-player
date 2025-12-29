@@ -56,6 +56,7 @@ export const useSavedGamesStore = create<{
         }),
         {
             name: `${settings.gameName}-savedGames`,
+            version: 2,
             storage: createJSONStorage(() => ({
                 getItem: (name) => localStorage.getItem(name),
                 setItem: (name, value) => {
@@ -73,6 +74,23 @@ export const useSavedGamesStore = create<{
                 },
                 removeItem: (name) => localStorage.removeItem(name),
             })),
+            migrate(persistedState: any, version) {
+                // Make it so that choices now have access to their tags
+                if (!version || version < 2) {
+                    return {
+                        ...persistedState,
+                        savedGames: persistedState.savedGames.map(
+                            (savedGame: any) => ({
+                                ...savedGame,
+                                choices: savedGame.choices.map(
+                                    (choice: any) => ({ choice, tags: [] }),
+                                ),
+                            }),
+                        ),
+                    };
+                }
+                return persistedState;
+            },
         },
     ),
 );

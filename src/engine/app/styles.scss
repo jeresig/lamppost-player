@@ -129,3 +129,40 @@ p:has(.dice-roll.finished) ~ * {
     pointer-events: none;
     user-select: none;
 }
+
+button:has(.card) {
+    outline: none;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    text-align: left;
+    user-select: none;
+}
+
+button:has(.card):disabled {
+    cursor: default;
+    filter: grayscale(1);
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+button:active .card, button:focus .card, button:hover .card {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    --bs-card-border-color: var(--bs-link-hover-color);
+}
+
+.choices-container:has(.card) {
+    grid-template-columns: repeat(1, 1fr);
+}
+
+@include media-breakpoint-up(md) {
+    .choices-container:has(.card) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card .small {
+        font-size: 0.75rem;
+    }
+}

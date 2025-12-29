@@ -4,6 +4,7 @@ import { render } from "react";
 import App from "./engine/app/App";
 import { registerWidget } from "./engine/shared/widgets";
 import { achievementsWidget } from "./engine/widgets/Achievements";
+import { cardWidget } from "./engine/widgets/Card";
 import { diceRollWidget } from "./engine/widgets/DiceRoll";
 import { headerImageWidget } from "./engine/widgets/HeaderImage";
 import { imageWidget } from "./engine/widgets/Image";
@@ -37,6 +38,7 @@ registerWidget(locationWidget);
 registerWidget(portraitWidget);
 registerWidget(diceRollWidget);
 registerWidget(achievementsWidget);
+registerWidget(cardWidget);
 
 const root = document.getElementById("root");
 

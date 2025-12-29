@@ -83,7 +83,7 @@ export const useSavedGamesStore = create<{
                             (savedGame: any) => ({
                                 ...savedGame,
                                 choices: savedGame.choices.map(
-                                    (choice: any) => ({ choice, tags: [] }),
+                                    (choice: any) => ({ choice, tags: {} }),
                                 ),
                             }),
                         ),

@@ -221,10 +221,23 @@ const getStoryState = ({
         }
     }
 
-    const choices = story.currentChoices.map((choice) => ({
-        choice: parseWidget(choice.text),
-        tags: choice.tags || [],
-    }));
+    const choices = story.currentChoices.map((choice) => {
+        const tags: Record<string, string> = {};
+        if (choice.tags) {
+            for (const tag of choice.tags) {
+                const [key, value] = tag.split(":").map((t) => t.trim());
+                if (value === "None") {
+                    delete tags[key];
+                } else {
+                    tags[key] = value;
+                }
+            }
+        }
+        return {
+            choice: parseWidget(choice.text),
+            tags,
+        };
+    });
 
     return {
         id: crypto.randomUUID(),

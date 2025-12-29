@@ -244,7 +244,7 @@ function GameChoices({
             autoFocus={index === 0}
             choice={choice.choice}
             onCompletion={onCompletion(index)}
-            disabled={choice.tags.includes("disabled")}
+            disabled={"disabled" in choice.tags}
         />
     ));
 

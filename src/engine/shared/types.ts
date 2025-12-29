@@ -22,7 +22,7 @@ export type GameState = {
     tags: Record<string, string>;
     choices: Array<{
         choice: string | Widget;
-        tags: string[];
+        tags: Record<string, string>;
     }>;
     selectedChoice?: number;
 };

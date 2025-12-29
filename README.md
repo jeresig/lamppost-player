@@ -23,6 +23,37 @@ Requirements: [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/).
 
 The Lamp Post Ink Player includes a number of custom tags and markup that be used to show special features exclusive to this player.
 
+### Themes & Dark Mode
+
+By default the display will use the built-in Bootstrap light theme. You can override this by setting `defaultTheme: "dark"` in the `src/story/settings.ts` file.
+
+Additionally, you can set `enableDarkMode: true` to use whatever the user's preferred theme is (which is configured via their operating system). The user will also be presented with a way to configure the theme in the page header. If the user chooses an option here it will override any specified `defaultTheme`.
+
+### Page Configuration
+
+You can configure which pages are shown in the sidebar and in what order they are displayed. These are displayed in the sidebar and in the header (on mobile).
+
+There are two built-in screens: "Game" and "History". Those must have the id of "game" and "history", respectively, but can have custom titles. The only required screen is "Game".
+
+Additionally, there is a "Achievements" screen and can be added by adding the following to the screens array:
+
+```
+{
+    id: "achievements",
+    title: "Achievements",
+    component: "achievements",
+},
+```
+
+You can reorder the screens however you like, the first listed screen will be shown to the user by default.
+
+You can also add custom screens by providing a component. The component will be rendered in a tab, and can be any valid React component.
+
+The component is provided with the following props:
+
+* `setPage`: A function to navigate to a different screen
+* `loading`: A boolean indicating if the game is loading
+
 ### Header Images
 
 Images to be used in the header for a knot. Can be configured by setting the "Image:Name" tag in your Ink story. The "Name" value will be used to match one of the images defined in the `src/story/settings.ts` file.

@@ -5,8 +5,8 @@ import { About } from "./About";
  * The screens available to the user. These are displayed in the sidebar
  * and in the header (on mobile).
  *
- * There are two built-in screens: "Game" and "History".
- * Those must have the id of "game" and "history", respectively,
+ * There are three built-in screens: "Game", "History", and "Achievements".
+ * Those must have the id of "game", "history", and "achievements", respectively,
  * but can have custom titles. The only required screen is "Game".
  *
  * You can reorder the screens however you like, the first listed screen
@@ -34,5 +34,10 @@ export default [
         id: "history",
         title: "History",
         component: "History",
+    },
+    {
+        id: "achievements",
+        title: "Achievements",
+        component: "Achievements",
     },
 ] satisfies Screen[];

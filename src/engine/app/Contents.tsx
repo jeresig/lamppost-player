@@ -10,6 +10,24 @@ import screens from "../../story/screens";
 import { Game } from "../game/Game";
 import History from "../history/History";
 import type { ScreenProps } from "../shared/types";
+import { screenWidgets } from "../shared/widgets";
+
+const getPageComponent = ({
+    component,
+}: {
+    component: string | ((props: ScreenProps) => React.ReactNode);
+}) => {
+    if (component === "Game") {
+        return Game;
+    } else if (component === "History") {
+        return History;
+    } else if (typeof component === "string" && screenWidgets.get(component)) {
+        return screenWidgets.get(component);
+    } else if (typeof component === "function") {
+        return component;
+    }
+    return null;
+};
 
 const Contents = (props: ScreenProps) => {
     const { page, setPage, loading } = props;
@@ -37,8 +55,8 @@ const Contents = (props: ScreenProps) => {
                         className="d-none d-lg-block position-fixed"
                         sm={3}
                         style={{
-                            width: 163,
-                            marginLeft: -143,
+                            width: 170,
+                            marginLeft: -150,
                         }}
                     >
                         <Nav variant="pills" className="flex-column">
@@ -69,13 +87,9 @@ const Contents = (props: ScreenProps) => {
                                     active={page === screen.id}
                                 >
                                     {page === screen.id &&
-                                        (screen.component === "Game" ? (
-                                            <Game />
-                                        ) : screen.component === "History" ? (
-                                            <History />
-                                        ) : (
-                                            <screen.component {...props} />
-                                        ))}
+                                        getPageComponent({
+                                            component: screen.component,
+                                        })?.(props)}
                                 </Tab.Pane>
                             ))}
                         </Tab.Content>

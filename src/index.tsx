@@ -3,6 +3,7 @@ import { render } from "react";
 
 import App from "./engine/app/App";
 import { registerWidget } from "./engine/shared/widgets";
+import { achievementsWidget } from "./engine/widgets/Achievements";
 import { diceRollWidget } from "./engine/widgets/DiceRoll";
 import { headerImageWidget } from "./engine/widgets/HeaderImage";
 import { imageWidget } from "./engine/widgets/Image";
@@ -35,6 +36,7 @@ registerWidget(headerImageWidget);
 registerWidget(locationWidget);
 registerWidget(portraitWidget);
 registerWidget(diceRollWidget);
+registerWidget(achievementsWidget);
 
 const root = document.getElementById("root");
 

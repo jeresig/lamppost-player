@@ -8,6 +8,7 @@ import { useStoryStore } from "../shared/game-state";
 import { useSavedGamesStore } from "../shared/saved-games";
 import Contents from "./Contents";
 import Header from "./Header";
+import { Toasts } from "./Toasts";
 
 const App = () => {
     const [page, setPage] = useQueryState("page", {
@@ -30,7 +31,9 @@ const App = () => {
             const mostRecentSavedGame = getMostRecentSavedGame();
             if (mostRecentSavedGame) {
                 loadSavedGame(mostRecentSavedGame);
-                setPage("game");
+                if (page === screens[0].id) {
+                    setPage("game");
+                }
             } else {
                 startNewGame();
             }
@@ -47,10 +50,17 @@ const App = () => {
     return (
         <HelmetProvider>
             <Helmet titleTemplate={`${settings.gameName}: %s`}>
-                {settings.favicon && <link rel="icon" type="image/x-icon" href={settings.favicon} />}
+                {settings.favicon && (
+                    <link
+                        rel="icon"
+                        type="image/x-icon"
+                        href={settings.favicon}
+                    />
+                )}
             </Helmet>
             <Header page={page} setPage={setPage} loading={loading} />
             <Contents page={page} setPage={setPage} loading={loading} />
+            <Toasts page={page} setPage={setPage} loading={loading} />
         </HelmetProvider>
     );
 };

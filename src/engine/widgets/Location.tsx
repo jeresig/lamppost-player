@@ -1,8 +1,12 @@
-import type { GameState, WidgetKnotProps, WidgetRegistry } from "../shared/types";
+import type {
+    GameState,
+    WidgetKnotProps,
+    WidgetRegistry,
+} from "../shared/types";
 
 const key = ({ currentState }: { currentState: GameState }) => {
     return currentState.tags.Location || null;
-}
+};
 
 function Location({ currentState, transitionStatus }: WidgetKnotProps) {
     const location = currentState.tags.Location;
@@ -18,17 +22,19 @@ function Location({ currentState, transitionStatus }: WidgetKnotProps) {
             style={
                 hasHeaderImage
                     ? {
-                        position: "absolute",
-                        bottom: 0,
-                        left: "var(--bs-card-spacer-x)",
-                        marginBottom: 0,
-                    }
+                          position: "absolute",
+                          bottom: 0,
+                          left: "var(--bs-card-spacer-x)",
+                          marginBottom: 0,
+                      }
                     : {
-                        marginLeft: "var(--bs-card-spacer-x)",
-                        display: "inline-block",
-                    }
+                          marginLeft: "var(--bs-card-spacer-x)",
+                          paddingLeft: 0,
+                          paddingTop: "0.5rem",
+                          display: "inline-block",
+                      }
             }
-            className={`fs-3 bg-body bg-opacity-75 p-2 rounded-top transitioned ${transitionStatus || ""}`}
+            className={`fs-3 bg-body bg-opacity-75 rounded-top transitioned ${transitionStatus || ""} ${hasHeaderImage ? "p-2" : ""}`}
         >
             {location}
         </h1>

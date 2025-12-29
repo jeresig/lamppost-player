@@ -3,12 +3,16 @@ import Button from "react-bootstrap/Button";
 import BootstrapImage from "react-bootstrap/Image";
 import Modal from "react-bootstrap/Modal";
 
-import type { GameState, WidgetKnotProps, WidgetRegistry } from "../shared/types";
+import type {
+    GameState,
+    WidgetKnotProps,
+    WidgetRegistry,
+} from "../shared/types";
 import { getWidgetSettings } from "../shared/widgets";
 
 const key = ({ currentState }: { currentState: GameState }) => {
     return currentState.tags.Portrait || null;
-}
+};
 
 function Portrait({ currentState, transitionStatus }: WidgetKnotProps) {
     const [showPortraitModal, setShowPortraitModal] = useState(false);
@@ -64,7 +68,7 @@ function Portrait({ currentState, transitionStatus }: WidgetKnotProps) {
     );
 }
 
-export const preload = async () => {
+const preload = async () => {
     const portraits = getWidgetSettings("portrait");
 
     if (!portraits) {

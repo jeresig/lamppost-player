@@ -151,6 +151,42 @@ To make a tag sticky, in `src/story/settings.ts`:
 stickyTags: ["Location"],
 ```
 
+### Achievements
+
+To add an achievement, in `src/story/settings.ts`:
+
+```
+widgets: {
+    achievements: {
+        "all-endings": {
+            icon: MapImage,
+            title: "All Endings",
+            description: "Complete all the endings of the game.",
+            hidden: true,
+            showHiddenButtonText: "View Locked Achievement",
+        },
+    },
+},
+```
+
+The properties for configuring an achievement are as follows:
+
+* `icon`: Can be a path to an image or a React component which renders an image.
+* `title`: The name of the achievement to display to the user.
+* `description` (optional): The description of the achievement to display to the user.
+* `hidden` (optional, defaults to `false`): Should this achievement be hidden on the achievements page?
+* `showHiddenButtonText` (optional): If the achievement is `hidden` then a button will be overlaid on it, with this text in it, which a user can click to reveal the hidden achievement.
+
+And then in your `src/story/screens.ts` file you'll want to add an Achievements page:
+
+```
+{
+    id: "achievements",
+    title: "Achievements",
+    component: "achievements",
+},
+```
+
 ## Credits and License
 
 * The prototype version of this software was created by Nell Shaw Cohen for use in the games [The Secrets of Sylvan Gardens](https://lamppostprojects.com/the-secrets-of-sylvan-gardens), [Fantasy Opera: Mischief at the Masquerade](https://lamppostprojects.com/fantasy-opera), and [The Path of Totality](https://lamppostprojects.com/the-path-of-totality).

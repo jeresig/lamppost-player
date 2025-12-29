@@ -1,6 +1,10 @@
 import Card from "react-bootstrap/Card";
 
-import type { GameState, WidgetKnotProps, WidgetRegistry } from "../shared/types";
+import type {
+    GameState,
+    WidgetKnotProps,
+    WidgetRegistry,
+} from "../shared/types";
 import { getWidgetSettings } from "../shared/widgets";
 
 function key({ currentState }: { currentState: GameState }) {
@@ -15,11 +19,16 @@ function HeaderImage({ currentState, transitionStatus }: WidgetKnotProps) {
         return null;
     }
     return (
-        <Card.Img src={imageSrc} alt={currentState.tags.Image} variant="top" className={`transitioned ${transitionStatus || ""}`} />
+        <Card.Img
+            src={imageSrc}
+            alt={currentState.tags.Image}
+            variant="top"
+            className={`transitioned ${transitionStatus || ""}`}
+        />
     );
 }
 
-export const preload = async () => {
+const preload = async () => {
     const headerImages = getWidgetSettings("headerImage");
 
     if (!headerImages) {

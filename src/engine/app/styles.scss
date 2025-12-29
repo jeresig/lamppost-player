@@ -28,6 +28,7 @@
 @import "~bootstrap/scss/grid";
 @import "~bootstrap/scss/card";
 @import "~bootstrap/scss/modal";
+@import "~bootstrap/scss/toasts";
 @import "~bootstrap/scss/close";
 @import "~bootstrap/scss/buttons";
 @import "~bootstrap/scss/nav";
@@ -113,4 +114,18 @@ p:has(.dice-roll.finished) ~ * {
 
 :has(.dice-roll.finished) ~ .choices-container {
     opacity: 1;
+}
+
+.achievement-incomplete {
+    filter: grayscale(1);
+}
+
+.achievement-blurred {
+    filter: blur(5px);
+}
+
+.achievement-incomplete.achievement-blurred {
+    filter: grayscale(1) blur(5px);
+    pointer-events: none;
+    user-select: none;
 }

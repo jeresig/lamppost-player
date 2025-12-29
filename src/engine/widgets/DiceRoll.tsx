@@ -69,7 +69,7 @@ const log = ({ input }: WidgetHistoryProps) => {
     return `<p>[<strong>Dice Roll:</strong> ${getAlt(input)}]</p>`;
 };
 
-export const preload = async () => {
+const preload = async () => {
     const diceSettings = getWidgetSettings("dice-roll");
 
     if (!diceSettings) {

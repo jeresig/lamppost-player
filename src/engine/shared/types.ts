@@ -33,7 +33,11 @@ export type ScreenProps = {
 export type Screen = {
     id: string;
     title: string;
-    component: "History" | "Game" | ((props: ScreenProps) => React.ReactNode);
+    component:
+        | "History"
+        | "Game"
+        | string
+        | ((props: ScreenProps) => React.ReactNode);
 };
 
 export type Settings = {
@@ -84,9 +88,17 @@ export type WidgetKeyProps = {
     currentState: GameState;
 };
 
+export type WidgetToastFn = (currentState: GameState) => {
+    id: string;
+    title: React.ReactNode;
+    description: React.ReactNode;
+}[];
+
 export type WidgetRegistry = {
     type: string;
     log?: (props: WidgetHistoryProps) => string;
+    toast?: WidgetToastFn;
+    screen?: (props: ScreenProps) => React.ReactNode;
     history?: (props: WidgetHistoryProps) => React.ReactNode;
     gameText?: (props: WidgetGameTextProps) => React.ReactNode;
     gameChoice?: (props: WidgetChoiceProps) => React.ReactNode;

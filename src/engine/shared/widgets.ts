@@ -1,5 +1,6 @@
 import settings from "../../story/settings";
 import type {
+    ScreenProps,
     WidgetChoiceProps,
     WidgetGameTextProps,
     WidgetHeaderProps,
@@ -7,11 +8,17 @@ import type {
     WidgetKeyProps,
     WidgetKnotProps,
     WidgetRegistry,
+    WidgetToastFn,
 } from "./types";
 
 export const logWidgets = new Map<
     string,
     (props: WidgetHistoryProps) => string
+>();
+export const toastWidgets = new Map<string, WidgetToastFn>();
+export const screenWidgets = new Map<
+    string,
+    (props: ScreenProps) => React.ReactNode
 >();
 export const historyWidgets = new Map<
     string,
@@ -42,6 +49,12 @@ export const keyWidgets = new Map<
 export const registerWidget = (widget: WidgetRegistry) => {
     if (widget.log) {
         logWidgets.set(widget.type, widget.log);
+    }
+    if (widget.toast) {
+        toastWidgets.set(widget.type, widget.toast);
+    }
+    if (widget.screen) {
+        screenWidgets.set(widget.type, widget.screen);
     }
     if (widget.history) {
         historyWidgets.set(widget.type, widget.history);

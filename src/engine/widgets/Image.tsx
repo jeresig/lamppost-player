@@ -24,19 +24,21 @@ function ImageHistory({ input }: WidgetHistoryProps) {
     }
 
     const alt = input.alt || `Image: ${input.name}`;
-    const renderedImage = <BootstrapImage
-        fluid
-        thumbnail
-        src={image.small}
-        alt={alt}
-        className={
-            input.align === "left"
-                ? "float-start mr-4 mb-4"
-                : input.align === "right"
-                    ? "float-end ml-4 mb-4"
-                    : "mx-auto d-block mb-4"
-        }
-    />;
+    const renderedImage = (
+        <BootstrapImage
+            fluid
+            thumbnail
+            src={image.small}
+            alt={alt}
+            className={
+                input.align === "left"
+                    ? "float-start mr-4 mb-4"
+                    : input.align === "right"
+                      ? "float-end ml-4 mb-4"
+                      : "mx-auto d-block mb-4"
+            }
+        />
+    );
 
     if (!image.large) {
         return renderedImage;
@@ -78,7 +80,7 @@ const ImageGameText = ({ input }: WidgetGameTextProps) => {
     return <ImageHistory input={input} />;
 };
 
-export const preload = async () => {
+const preload = async () => {
     const images = getWidgetSettings("images");
 
     if (!images) {

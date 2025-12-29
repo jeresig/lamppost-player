@@ -127,7 +127,7 @@ widgets: {
 
 ### Text Input
 
-A text input to be displayed inside a choice. Can be configured by using a special `!widget:text-input` syntax in your Ink story.
+A text input to be displayed inside a choice. Can be configured by using a special `!widget:text-input` syntax in a choice in your Ink story.
 
 The text input widget has the following props:
 
@@ -141,6 +141,40 @@ For example, in your Ink file, add the following text as one of your choices:
 !widget:text-input name="name-var" label="Your Name" submit-label="Set Name"
 ```
 
+### Card Choices
+
+A card to be displayed inside a choice. Can be configured by using a special `!widget:card` syntax in a choice in your Ink story.
+
+The card widget has the following props:
+
+* `title` (required): The primary text of the choice that will be displayed both in the game and in the history/logs.
+* `description` (optional): Additional contextual text to help guide the user towards making a decision.
+* `icon` (optional): The image to use on the side of the card. Can be a path to an image or a React component/SVG.
+
+For example, in your Ink file, add the following text as one of your choices:
+
+```
+!widget:card icon="library" title="Visit the Library"
+```
+
+To add any card images, in `src/story/settings.ts`:
+
+```
+import LibraryImage from "./assets/images/library.jpg";
+import SunIcon from "bootstrap-icons/icons/sun.svg?react";
+...
+widgets: {
+    card: {
+        "library": LibraryImage,
+        "sun": SunIcon,
+    },
+},
+```
+
+### Disabled Choices
+
+Individual choices can be disabled by adding a `# disabled` tag within the choice. It will make it so that the choice cannot be selected by the user.
+
 ### Sticky Tags
 
 The Lamp Post Ink Player has the ability to "persist" tags defined in knots to future knots. This can help to simplify some of the configuration of some tags used by features (such as Location, ImageHeader, etc.). If you wish to turn "off" a persisted tag then you can set the tag to be "None", like so: `# Location:None`.
@@ -153,9 +187,14 @@ stickyTags: ["Location"],
 
 ### Achievements
 
+Achievements are a way to reward users with successfully accessing parts of the ink file. They can be triggered by adding a `# Achievement:all-endings` tag in your game (replacing `all-endings` with the name of your achievement).
+
 To add an achievement, in `src/story/settings.ts`:
 
 ```
+import MapImage from "./assets/images/map.jpg";
+import SunIcon from "bootstrap-icons/icons/sun.svg?react";
+...
 widgets: {
     achievements: {
         "all-endings": {
@@ -164,6 +203,11 @@ widgets: {
             description: "Complete all the endings of the game.",
             hidden: true,
             showHiddenButtonText: "View Locked Achievement",
+        },
+        "new-day": {
+            icon: SunIcon,
+            title: "Reach a New Day",
+            description: "Start a new day.",
         },
     },
 },
@@ -184,6 +228,43 @@ And then in your `src/story/screens.ts` file you'll want to add an Achievements 
     id: "achievements",
     title: "Achievements",
     component: "achievements",
+},
+```
+
+### Dice Rolls
+
+A widget for displaying the results of a die roll. Doesn't actually perform a roll itself, instead it's a mechanism for displaying a non-looping die roll gif and delaying the display of all text and choices after the die roll (for dramatic effect).
+
+You can insert a die roll into a page using:
+
+```
+!widget:dice-roll die="d4" value="1" alt="A 1 on a 4-sided die"
+```
+
+The options are as follows:
+
+* `die` (required): The type of die being rolled (used to look up the right image).
+* `value` (required): The face of the die (used to look up the right image).
+* `alt` (required): The text used for screen readers and also for display in the game history and logs.
+* `duration` (optional, default `1500`): How long to delay the display of all subsequent text and choices. Set to `"0"` to have no delay.
+
+To configure the images to use in `src/story/settings.ts`:
+
+```
+import Dice1 from "./assets/images/dice/d4_1.gif";
+import Dice2 from "./assets/images/dice/d4_2.gif";
+import Dice3 from "./assets/images/dice/d4_3.gif";
+import Dice4 from "./assets/images/dice/d4_4.gif";
+...
+widgets: {
+    "dice-roll": {
+        d4: {
+            "1": Dice1,
+            "2": Dice2,
+            "3": Dice3,
+            "4": Dice4,
+        },
+    },
 },
 ```
 

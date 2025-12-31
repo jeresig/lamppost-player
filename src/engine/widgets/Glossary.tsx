@@ -50,8 +50,7 @@ const processTextLine = ({ line, context }: WidgetProcessTextLineProps) => {
         }
         const isProperNoun = match.charAt(0).toUpperCase() === match.charAt(0);
         const className = `glossary${isProperNoun ? " proper-noun" : ""}`;
-        const tagName =
-            context === "choice" || context === "history-choice" ? "i" : "a";
+        const tagName = context === "choice" ? "i" : "a";
         if (tagName === "a") {
             return `<a href="#glossary-${match.toLowerCase()}" data-glossary-key="${glossaryKey}" class="${className}">${match}</a>`;
         }
@@ -59,7 +58,7 @@ const processTextLine = ({ line, context }: WidgetProcessTextLineProps) => {
     });
 };
 
-const TextLine = ({ children }: WidgetTextLineProps) => {
+const TextLine = ({ children, context }: WidgetTextLineProps) => {
     const ref = useRef<HTMLDivElement>(null);
     const [currentElement, setCurrentElement] =
         useState<HTMLAnchorElement | null>(null);
@@ -154,10 +153,10 @@ const TextLine = ({ children }: WidgetTextLineProps) => {
         return children;
     }
 
+    const Element = context === "history-choice" ? "span" : "div";
+
     return (
-        // biome-ignore lint/a11y/noStaticElementInteractions: We're capturing child events here
-        // biome-ignore lint/a11y/useKeyWithClickEvents: We're not interacting directly with this element
-        <div
+        <Element
             ref={ref}
             onClick={handleActivation}
             onMouseEnterCapture={handleActivation}
@@ -171,7 +170,7 @@ const TextLine = ({ children }: WidgetTextLineProps) => {
                         </Overlay>
                     ),
             )}
-        </div>
+        </Element>
     );
 };
 

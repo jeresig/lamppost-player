@@ -1,3 +1,4 @@
+import type { Story } from "inkjs";
 import type React from "react";
 import type { TransitionStatus } from "react-transition-state";
 
@@ -55,6 +56,12 @@ export type Settings = {
     widgets?: Record<string, Record<string, any>>;
 };
 
+export type WidgetToastFn = (currentState: GameState) => {
+    id: string;
+    title: React.ReactNode;
+    description: React.ReactNode;
+}[];
+
 export type WidgetChoiceProps = {
     input: Record<string, string>;
     onCompletion: ({
@@ -91,11 +98,19 @@ export type WidgetKeyProps = {
     currentState: GameState;
 };
 
-export type WidgetToastFn = (currentState: GameState) => {
-    id: string;
-    title: React.ReactNode;
-    description: React.ReactNode;
-}[];
+export type WidgetProcessTextLineProps = {
+    line: string;
+    context: "game" | "history" | "choice" | "history-choice";
+};
+
+export type WidgetTextLineProps = {
+    children: React.ReactNode;
+    context: "game" | "history";
+};
+
+export type WidgetHandleStoryLoadProps = {
+    story: Story;
+};
 
 export type WidgetRegistry = {
     type: string;
@@ -109,4 +124,7 @@ export type WidgetRegistry = {
     knot?: (props: WidgetKnotProps) => React.ReactNode;
     preload?: () => Promise<any>;
     key?: (props: WidgetKeyProps) => string | null;
+    processTextLine?: (props: WidgetProcessTextLineProps) => string;
+    textLine?: (props: WidgetTextLineProps) => React.ReactNode;
+    handleStoryLoad?: (props: WidgetHandleStoryLoadProps) => void;
 };

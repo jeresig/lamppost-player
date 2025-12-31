@@ -3,12 +3,33 @@ import Placeholder from "react-bootstrap/Placeholder";
 import type { TransitionStatus } from "react-transition-state";
 
 import type { GameState, Widget } from "../shared/types";
-import { gameTextWidgets } from "../shared/widgets";
+import {
+    gameTextWidgets,
+    processTextLineWidgets,
+    textLineWidgets,
+} from "../shared/widgets";
 
 export const GameTextLine = ({ text }: { text: string | Widget }) => {
     if (typeof text === "string") {
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: ...
-        return <p dangerouslySetInnerHTML={{ __html: text }} />;
+        let processedText = text;
+
+        for (const processTextLine of processTextLineWidgets.values()) {
+            processedText = processTextLine({
+                line: processedText,
+                context: "game",
+            });
+        }
+
+        let contents = (
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: ...
+            <p dangerouslySetInnerHTML={{ __html: processedText }} />
+        );
+
+        for (const TextLine of textLineWidgets.values()) {
+            contents = <TextLine context="game">{contents}</TextLine>;
+        }
+
+        return contents;
     }
     const Widget = gameTextWidgets.get(text.type);
     if (Widget) {

@@ -20,7 +20,7 @@ function CardHistory({ input: { title } }: WidgetHistoryProps) {
 }
 
 function Card({ input, onCompletion, autoFocus, disabled }: WidgetChoiceProps) {
-    const { icon, title, description } = input;
+    const { icon, title, description, height: cardHeight } = input;
     const buttonRef = useRef<HTMLButtonElement>(null);
     const cardImages = getWidgetSettings("card");
 
@@ -47,7 +47,8 @@ function Card({ input, onCompletion, autoFocus, disabled }: WidgetChoiceProps) {
 
     const cardImage = cardImages?.[icon as keyof typeof cardImages];
     const Icon = cardImage;
-    const height = "100px";
+    const defaultHeight = "100px";
+    const height = cardHeight || defaultHeight;
 
     return (
         <button
@@ -58,7 +59,7 @@ function Card({ input, onCompletion, autoFocus, disabled }: WidgetChoiceProps) {
         >
             <div
                 className="card position-relative overflow-hidden"
-                style={{ height: height }}
+                style={{ height }}
             >
                 <div className="d-flex flex-row">
                     {cardImage && (
@@ -97,9 +98,13 @@ function Card({ input, onCompletion, autoFocus, disabled }: WidgetChoiceProps) {
                         <div className="card-body">
                             <h5 className="card-title">{title}</h5>
                             {description && (
-                                <p className="card-text text-muted text-body-secondary small">
-                                    {description}
-                                </p>
+                                <p
+                                    className="card-text text-muted text-body-secondary small"
+                                    // biome-ignore lint/security/noDangerouslySetInnerHtml: We want to render the HTML
+                                    dangerouslySetInnerHTML={{
+                                        __html: description,
+                                    }}
+                                />
                             )}
                         </div>
                     </div>

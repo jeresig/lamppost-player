@@ -40,6 +40,8 @@
 @import "~bootstrap/scss/alert";
 @import "~bootstrap/scss/helpers";
 @import "~bootstrap/scss/transitions";
+@import "~bootstrap/scss/tooltip";
+@import "~bootstrap/scss/popover";
 
 // 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
 @import "~bootstrap/scss/utilities/api";
@@ -98,12 +100,12 @@ body {
     display: none !important;
 }
 
-p:has(.dice-roll) ~ * {
+.text-container > *:has(.dice-roll) ~ * {
     opacity: 0;
     transition: opacity 0.5s ease-in;
 }
 
-p:has(.dice-roll.finished) ~ * {
+.text-container > *:has(.dice-roll.finished) ~ * {
     opacity: 1;
 }
 
@@ -165,4 +167,28 @@ button:active .card, button:focus .card, button:hover .card {
     .card .small {
         font-size: 0.75rem;
     }
+}
+
+.glossary {
+    color: var(--bs-body-color);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-color: rgba(var(--bs-body-color-rgb), 0.25);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+}
+
+p:hover .glossary {
+    color: var(--bs-link-hover-color);
+    text-decoration-style: solid;
+    text-decoration-color: var(--bs-link-hover-color);
+}
+
+.choices-container .glossary {
+    text-decoration: none;
+    font-style: italic;
+}
+
+.choices-container .glossary.proper-noun {
+    font-style: normal;
 }

@@ -10,7 +10,7 @@ import { LoadModal } from "../saves/LoadModal";
 import { useStoryStore } from "../shared/game-state";
 import { useSavedGamesStore } from "../shared/saved-games";
 import type { GameState, Widget } from "../shared/types";
-import { gameChoiceWidgets } from "../shared/widgets";
+import { gameChoiceWidgets, processTextLineWidgets } from "../shared/widgets";
 
 const handleAutoFocus = (element: HTMLButtonElement | null) => {
     element?.focus({ preventScroll: true });
@@ -41,8 +41,19 @@ const Choice = ({
     }
 
     if (typeof choice === "string") {
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: We want to render the HTML
-        let contents = <span dangerouslySetInnerHTML={{ __html: choice }} />;
+        let processedText = choice;
+
+        for (const processTextLine of processTextLineWidgets.values()) {
+            processedText = processTextLine({
+                line: processedText,
+                context: "choice",
+            });
+        }
+
+        let contents = (
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: We want to render the HTML
+            <span dangerouslySetInnerHTML={{ __html: processedText }} />
+        );
         if (disabled) {
             contents = (
                 <span>

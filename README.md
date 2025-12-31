@@ -299,6 +299,17 @@ widgets: {
 },
 ```
 
+### Glossary
+
+If you add a function into your game file with the name like:
+
+```
+=== function glossary_word ===
+A definition of the word.
+```
+
+Then it'll automatically find all instances of that word in the game text and make them clickable to view the definition of the word as a popover.
+
 ## Credits and License
 
 * The prototype version of this software was created by Nell Shaw Cohen for use in the games [The Secrets of Sylvan Gardens](https://lamppostprojects.com/the-secrets-of-sylvan-gardens), [Fantasy Opera: Mischief at the Masquerade](https://lamppostprojects.com/fantasy-opera), and [The Path of Totality](https://lamppostprojects.com/the-path-of-totality).

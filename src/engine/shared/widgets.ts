@@ -3,11 +3,14 @@ import type {
     ScreenProps,
     WidgetChoiceProps,
     WidgetGameTextProps,
+    WidgetHandleStoryLoadProps,
     WidgetHeaderProps,
     WidgetHistoryProps,
     WidgetKeyProps,
     WidgetKnotProps,
+    WidgetProcessTextLineProps,
     WidgetRegistry,
+    WidgetTextLineProps,
     WidgetToastFn,
 } from "./types";
 
@@ -45,6 +48,18 @@ export const keyWidgets = new Map<
     string,
     (props: WidgetKeyProps) => string | null
 >();
+export const processTextLineWidgets = new Map<
+    string,
+    (props: WidgetProcessTextLineProps) => string
+>();
+export const textLineWidgets = new Map<
+    string,
+    (props: WidgetTextLineProps) => React.ReactNode
+>();
+export const handleStoryLoadWidgets = new Map<
+    string,
+    (props: WidgetHandleStoryLoadProps) => void
+>();
 
 export const registerWidget = (widget: WidgetRegistry) => {
     if (widget.log) {
@@ -76,6 +91,15 @@ export const registerWidget = (widget: WidgetRegistry) => {
     }
     if (widget.key) {
         keyWidgets.set(widget.type, widget.key);
+    }
+    if (widget.processTextLine) {
+        processTextLineWidgets.set(widget.type, widget.processTextLine);
+    }
+    if (widget.textLine) {
+        textLineWidgets.set(widget.type, widget.textLine);
+    }
+    if (widget.handleStoryLoad) {
+        handleStoryLoadWidgets.set(widget.type, widget.handleStoryLoad);
     }
 };
 

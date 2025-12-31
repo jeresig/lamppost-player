@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 import settings from "../../story/settings";
 import type { GameState, SavedGame, Widget } from "./types";
-import { preloadWidgets } from "./widgets";
+import { handleStoryLoadWidgets, preloadWidgets } from "./widgets";
 
 export const useStoryStore = create<{
     id: string;
@@ -71,6 +71,9 @@ export const useStoryStore = create<{
         story.onError = (error) => {
             set({ error });
         };
+        for (const handleStoryLoad of handleStoryLoadWidgets.values()) {
+            handleStoryLoad({ story });
+        }
         const newState = getStoryState({ story, currentState: null });
         if (newState) {
             set({
@@ -93,6 +96,9 @@ export const useStoryStore = create<{
         story.onError = (error) => {
             set({ error });
         };
+        for (const handleStoryLoad of handleStoryLoadWidgets.values()) {
+            handleStoryLoad({ story });
+        }
         story.state.LoadJson(storyData);
         set({
             id: crypto.randomUUID(),

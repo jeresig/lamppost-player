@@ -16,6 +16,8 @@ import settings from "./story/settings";
 import "./engine/app/styles.scss";
 import "./story/styles.scss";
 
+import { glossaryWidget } from "./engine/widgets/Glossary";
+
 // Enable the theme
 let defaultTheme = "light";
 const userSetTheme = window.localStorage.getItem(`${settings.gameName}-theme`);
@@ -39,6 +41,7 @@ registerWidget(portraitWidget);
 registerWidget(diceRollWidget);
 registerWidget(achievementsWidget);
 registerWidget(cardWidget);
+registerWidget(glossaryWidget);
 
 const root = document.getElementById("root");
 
